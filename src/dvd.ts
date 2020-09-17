@@ -1,6 +1,7 @@
 import GameObject from "./gameObject";
 
 export default class DVD implements GameObject {
+    markedForDeletion: boolean = false
     x: number = 0;
     y: number = 0;
     maxSpeed: number = 5;

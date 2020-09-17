@@ -1,6 +1,10 @@
-import GameObject from "./gameObject";
+import GameObject from "./gameObject.js";
+import Game from "./game.js"
 
 export default class Player implements GameObject {
+    markedForDeletion: boolean = false
+
+    game: Game
     x: number = 0;
     y: number = 0;
     maxSpeed: number = 0;
@@ -9,19 +13,15 @@ export default class Player implements GameObject {
     width: number = 20;
     height: number = 20;
 
-    gameWidth: number = 0;
-    gameHeight: number = 0;
-
-    constructor(x: number, y: number, vx: number = 0, vy: number = 0, maxSpeed: number = 5, gameWidth: number, gameHeight: number, width: number = 20, height: number = 20) {
-        this.x = x;
-        this.y = y;
-        this.vx = vx;
-        this.vy = vy;
-        this.maxSpeed = maxSpeed;
-        this.width = width;
-        this.height = height;
-        this.gameWidth = gameWidth;
-        this.gameHeight = gameHeight;
+    constructor(game: Game) {
+        this.game = game
+        this.width = 20
+        this.height = 20
+        this.maxSpeed = 5
+        this.x = 400 - (this.width / 2)
+        this.vx = 0
+        this.y = 550
+        this.vy = 0
     }
 
     draw(ctx:CanvasRenderingContext2D): void {
@@ -31,16 +31,24 @@ export default class Player implements GameObject {
 
 
     update(): void {
-        if (this.x <  0 || this.x + this.width > this.gameWidth) {
-            this.vx = -this.vx;
-        }
-
-        if (this.y <  0 || this.y + this.height > this.gameHeight) {
-            this.vy = -this.vy;
-        }
-
         this.x += this.vx;
         this.y += this.vy;
+
+        if (this.x < 0) {
+            this.x = 0
+        }
+
+        if (this.x + this.width > this.game.width) {
+            this.x = this.game.width - this.width
+        }
+
+        if (this.y < 0) {
+            this.y = 0
+        }
+
+        if (this.y + this.height > this.game.height) {
+            this.y = this.game.height - this.height
+        }
     }
 
     moveLeft(): void {
@@ -77,5 +85,9 @@ export default class Player implements GameObject {
     stopDown(): void {
         if (this.vy < 0) return
         this.vy = 0
+    }
+
+    shoot(): void {
+        this.game.shoot(this.x + this.width / 2, this.y)
     }
 }

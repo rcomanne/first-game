@@ -6,15 +6,20 @@ export default class InputHandler {
                 case "ArrowLeft":
                     player.moveLeft();
                     break;
-                case "ArrowUp":
-                    player.moveUp();
-                    break;
+                // case "ArrowUp": 
+                //     player.moveUp()
+                //     break
                 case "ArrowRight":
                     player.moveRight();
                     break;
-                case "ArrowDown":
-                    player.moveDown();
+                // case "ArrowDown": 
+                //     player.moveDown()
+                //     break
+                case " ":
+                    player.shoot();
                     break;
+                default:
+                    console.log(event.key);
             }
         });
         document.addEventListener('keyup', (event) => {

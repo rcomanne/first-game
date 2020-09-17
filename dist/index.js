@@ -1,28 +1,19 @@
-import Player from "./player.js";
-import InputHandler from "./input.js";
+import Game from "./game.js";
 var canvas;
 var ctx;
-var player;
-var dvd;
-var gameObjects;
+var game;
 const GAME_HEIGHT = 600;
 const GAME_WIDTH = 800;
 function gameLoop() {
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-    gameObjects.forEach(function (gameObject) {
-        gameObject.update();
-        gameObject.draw(ctx);
-    });
+    game.update();
+    game.draw(ctx);
     requestAnimationFrame(gameLoop);
 }
 window.onload = () => {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext("2d");
-    gameObjects = new Array();
-    player = new Player(10, 10, 0, 0, 5, GAME_WIDTH, GAME_HEIGHT);
-    new InputHandler(player);
-    gameObjects.push(player);
+    game = new Game(GAME_WIDTH, GAME_HEIGHT);
+    game.start();
     requestAnimationFrame(gameLoop);
 };
 //# sourceMappingURL=index.js.map

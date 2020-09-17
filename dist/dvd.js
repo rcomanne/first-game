@@ -1,5 +1,6 @@
 export default class DVD {
     constructor(x, y, vx = 0, vy = 0, gameWidth, gameHeight, width = 20, height = 20) {
+        this.markedForDeletion = false;
         this.x = 0;
         this.y = 0;
         this.maxSpeed = 5;
