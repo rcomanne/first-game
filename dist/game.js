@@ -54,6 +54,8 @@ export default class Game {
     reset() {
         this.currentLevel = 0;
         this.lives = 1;
+        this.gameObjects = new Array();
+        this.enemies = new Array();
         this.gamestate = GAMESTATE.RUNNING;
         this.start();
     }
