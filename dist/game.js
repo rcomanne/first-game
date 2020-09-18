@@ -1,6 +1,6 @@
 import InputHandler from "./input.js";
 import Player from "./player.js";
-import { LEVEL_1, LEVEL_2 } from "./levels.js";
+import { LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6 } from "./levels.js";
 import Enemy from "./enemy.js";
 import Bullet from "./bullet.js";
 const GAMESTATE = {
@@ -8,14 +8,15 @@ const GAMESTATE = {
     RUNNING: 1,
     MENU: 2,
     GAMEOVER: 3,
-    NEXTLEVEL: 4
+    NEXTLEVEL: 4,
+    WINNER: 5
 };
 export default class Game {
     constructor(width, height) {
         this.gamestate = 0;
         this.lives = 1;
         this.currentLevel = 0;
-        this.levels = [LEVEL_1, LEVEL_2];
+        this.levels = [LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6];
         this.gameObjects = new Array();
         this.enemies = new Array();
         this.width = width;
@@ -25,6 +26,12 @@ export default class Game {
         this.gamestate = GAMESTATE.MENU;
     }
     start() {
+        if (this.gamestate === GAMESTATE.GAMEOVER || this.gamestate === GAMESTATE.WINNER) {
+            this.reset();
+        }
+        if (this.currentLevel >= this.levels.length) {
+            this.gamestate = GAMESTATE.WINNER;
+        }
         if (this.gamestate !== GAMESTATE.MENU && this.gamestate !== GAMESTATE.NEXTLEVEL) {
             return;
         }
@@ -34,20 +41,27 @@ export default class Game {
         let level = this.levels[this.currentLevel];
         let widthPerElement = this.width / level[0].length;
         let heightPerElement = 40;
+        let enemySpeed = (this.currentLevel + 1) * 0.25;
         for (let rowIndex = 0; rowIndex < level.length; rowIndex++) {
             for (let elementIndex = 0; elementIndex < level[rowIndex].length; elementIndex++) {
                 if (level[rowIndex][elementIndex] != 0) {
-                    this.enemies.push(new Enemy(elementIndex * widthPerElement, rowIndex * heightPerElement, 0, 1, this));
+                    this.enemies.push(new Enemy(elementIndex * widthPerElement, rowIndex * heightPerElement, 0, enemySpeed, this));
                 }
             }
         }
         this.gamestate = GAMESTATE.RUNNING;
     }
+    reset() {
+        this.currentLevel = 0;
+        this.lives = 1;
+        this.gamestate = GAMESTATE.RUNNING;
+        this.start();
+    }
     update() {
         if (this.lives < 1) {
             this.gamestate = GAMESTATE.GAMEOVER;
         }
-        if (this.gamestate === GAMESTATE.PAUSED || this.gamestate === GAMESTATE.MENU || this.gamestate === GAMESTATE.GAMEOVER) {
+        if (this.gamestate === GAMESTATE.PAUSED || this.gamestate === GAMESTATE.MENU || this.gamestate === GAMESTATE.GAMEOVER || this.gamestate == GAMESTATE.WINNER) {
             return;
         }
         this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
@@ -94,9 +108,23 @@ export default class Game {
             ctx.font = "30px Arial";
             ctx.textAlign = "center";
             ctx.fillText("GAME OVER", this.width / 2, this.height / 2);
+            ctx.fillText("Press ENTER to restart", this.width / 2, this.height / 2 + 30);
+        }
+        if (this.gamestate === GAMESTATE.WINNER) {
+            ctx.fillStyle = "rgba(0,0,0,0.5)";
+            ctx.fillRect(0, 0, this.width, this.height);
+            ctx.fillStyle = "white";
+            ctx.font = "30px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("CONGRATULATIONS!", this.width / 2, this.height / 2);
+            ctx.fillText("You have defeated us", this.width / 2, this.height / 2 + 30);
+            ctx.fillText("Press ENTER to restart", this.width / 2, this.height / 2 + 60);
         }
     }
     shoot(x, y) {
+        if (this.gamestate !== GAMESTATE.RUNNING) {
+            return;
+        }
         this.gameObjects.push(new Bullet(this, x, y));
     }
     togglePause() {

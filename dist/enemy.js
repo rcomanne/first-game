@@ -16,7 +16,6 @@ export default class Enemy {
     update() {
         this.x += this.vx;
         this.y += this.vy;
-        console.log("this.y " + this.y);
         if (this.y + this.height > this.game.height) {
             this.game.lives--;
             this.markedForDeletion = true;
