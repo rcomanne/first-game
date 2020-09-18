@@ -61,7 +61,7 @@ export default class Game {
 
         for (let rowIndex = 0; rowIndex < level.length; rowIndex++) {
             for (let elementIndex = 0; elementIndex < level[rowIndex].length; elementIndex++) {
-                if (level[rowIndex][elementIndex] != 0) {
+                if (level[rowIndex][elementIndex] !== 0) {
                     this.enemies.push(new Enemy(elementIndex * widthPerElement, rowIndex * heightPerElement, 0, enemySpeed, this))
                 }
             }            
@@ -88,7 +88,7 @@ export default class Game {
             this.gameState = GAME_STATE.GAME_OVER
         }
 
-        if (this.gameState === GAME_STATE.PAUSED || this.gameState === GAME_STATE.MENU || this.gameState === GAME_STATE.GAME_OVER || this.gameState == GAME_STATE.WINNER) {
+        if (this.gameState === GAME_STATE.PAUSED || this.gameState === GAME_STATE.MENU || this.gameState === GAME_STATE.GAME_OVER || this.gameState === GAME_STATE.WINNER) {
             return
         }
 
@@ -174,7 +174,7 @@ export default class Game {
     }
 
     togglePause() {
-        if (this.gameState == GAME_STATE.PAUSED) {
+        if (this.gameState === GAME_STATE.PAUSED) {
             this.gameState = GAME_STATE.RUNNING
         } else {
             this.gameState = GAME_STATE.PAUSED
