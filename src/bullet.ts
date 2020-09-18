@@ -38,6 +38,7 @@ export default class Bullet implements GameObject {
             let bottom = enemy.y + enemy.height
             if (this.x > left && this.x < right && this.y > top && this.y < bottom) {
                 enemy.markedForDeletion = true
+                this.game.score++
                 this.markedForDeletion = true
             }
         })
