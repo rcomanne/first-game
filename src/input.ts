@@ -1,28 +1,32 @@
+import Game from "./game";
 import Player from "./player"
 
 export default class InputHandler {
-    player: Player;
 
-    constructor(player: Player) {
-        this.player = player;
-
+    constructor(game: Game) {
         document.addEventListener('keydown', (event) => {
 
             switch(event.key) {
                 case "ArrowLeft": 
-                    player.moveLeft()
+                    game.player.moveLeft()
                     break
                 // case "ArrowUp": 
                 //     player.moveUp()
                 //     break
                 case "ArrowRight": 
-                    player.moveRight()
+                    game.player.moveRight()
                     break                    
                 // case "ArrowDown": 
                 //     player.moveDown()
                 //     break
                 case " ":
-                    player.shoot()
+                    game.player.shoot()
+                    break
+                case "Escape": 
+                    game.togglePause()
+                    break
+                case "Enter":
+                    game.start()
                     break
                 default:
                     console.log(event.key)
@@ -34,16 +38,16 @@ export default class InputHandler {
 
             switch(event.key) {
                 case "ArrowLeft": 
-                    player.stopLeft()
+                    game.player.stopLeft()
                     break
                 case "ArrowUp": 
-                    player.stopUp()
+                    game.player.stopUp()
                     break
                 case "ArrowRight": 
-                    player.stopRight()
+                    game.player.stopRight()
                     break                    
                 case "ArrowDown": 
-                    player.stopDown()
+                    game.player.stopDown()
                     break
             }
         })

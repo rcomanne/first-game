@@ -13,7 +13,6 @@ window.onload = () => {
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext("2d");
     game = new Game(GAME_WIDTH, GAME_HEIGHT);
-    game.start();
     requestAnimationFrame(gameLoop);
 };
 //# sourceMappingURL=index.js.map

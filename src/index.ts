@@ -19,6 +19,5 @@ window.onload = () => {
     ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
     game = new Game(GAME_WIDTH, GAME_HEIGHT)
-    game.start()
     requestAnimationFrame(gameLoop);
 }
