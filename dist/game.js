@@ -44,7 +44,7 @@ export default class Game {
         let level = this.levels[this.currentLevel];
         let widthPerElement = this.width / level[0].length;
         let heightPerElement = 40;
-        let enemySpeed = (this.currentLevel + 1) * 0.25;
+        let enemySpeed = this.currentLevel * 0.25;
         for (let rowIndex = 0; rowIndex < level.length; rowIndex++) {
             for (let elementIndex = 0; elementIndex < level[rowIndex].length; elementIndex++) {
                 if (level[rowIndex][elementIndex] !== 0) {
@@ -75,10 +75,12 @@ export default class Game {
         }
         this.enemies = this.enemies.filter(enemy => !enemy.markedForDeletion);
         if (this.enemies.length === 0) {
-            this.currentLevel++;
-            this.score += 10;
-            this.gameState = GAME_STATE.NEXT_LEVEL;
-            this.start();
+            if (this.gameState == GAME_STATE.RUNNING) {
+                this.currentLevel++;
+                this.score += 10;
+                this.gameState = GAME_STATE.NEXT_LEVEL;
+                this.start();
+            }
         }
         // filter for items marked for deletion
         this.gameObjects = this.gameObjects.filter(gameObject => !gameObject.markedForDeletion);
